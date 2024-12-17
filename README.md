@@ -1,55 +1,31 @@
-<p align="center">
-    <a href="https://vcalendar.io/" target="_blank">
-      <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557324348/v-calendar/hero.png">
-    </a>
-    <br>
-    An elegant calendar and datepicker plugin for Vuejs.
-</p>
-
-<p align="center">
-    <a href="https://www.npmjs.com/package/v-calendar"><img src="https://img.shields.io/npm/dt/v-calendar.svg" alt="Total Downloads"></a>
-    <a href="https://github.com/nathanreyes/v-calendar/releases"><img src="https://img.shields.io/npm/v/v-calendar.svg" alt="Latest Release"></a>
-    <a href="https://github.com/nathanreyes/v-calendar/releases"><img src="https://img.shields.io/npm/v/v-calendar/next.svg" alt="Next Release"></a>
-    <a href="https://github.com/nathanreyes/v-calendar/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/v-calendar.svg" alt="License"></a>
-</p>
-
-------
-
-```bash
-npm i --save v-calendar
-```
-
 ## Documentation
 
-For full documentation, visit [vcalendar.io](https://vcalendar.io/).
+This is a forked version of the [v-calendar plugin](https://github.com/nathanreyes/v-calendar). We've addressed accessibility issues in the calendar by adding aria labels in a few places. There is an [open PR here](https://github.com/nathanreyes/v-calendar/pull/1507/files) to merge these updates back into the original repo. The last PR that was merged into the original repo was in October of 2023, so I'm not holding my breath on that.
 
-### Attributes
+I wasn't able to figure out how the `lib` directory is built when a client runs `npm i --save v-calendar`. It didn't work out of the box. I tried doing it the proper way, by introducing a `prepare` script in package.json, but I never got it to work. So... I removed the `lib` line from `.gitignore` in the fork here and am just building the compiled lib code manually before pushing, tagging, and cutting a release. See below on how to do that if we need further updates:
 
-| Highlights | Dots |
-| :---: | :---: |
-| <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557326557/v-calendar/highlights.png"> | <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557326557/v-calendar/dots.png"> |
+```bash
+# INITIALIZE
+git clone git@github.com:slideroom/v-calendar.git; cd v-calendar
+nvm use 16.16.0                         # i believe this is the latest working version
+npm i
 
-| Bars | Popovers |
-| :---: | :---: |
-| <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557326557/v-calendar/bars.png"> | <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557326557/v-calendar/popovers.png"> |
+# CLIENT REPO: ATS
+npm uninstall v-calendar
+npm i <path-to-local-v-calendar-repo>   # install local version, then run ATS as you normally do
 
-### Multi-Paned Calendars
+# DEV: V-CALENDAR
+yarn build:lib                          # make updates, build, local ats env should automatically reload
 
-<img width="400" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557326946/v-calendar/multi-paned.png">
+# BUILD/DEPLOY: V-CALENDAR
+npm run build
+git commit -am 'YOUR UPDATE MSG'
+git tag v2.4.4                          # update the tag as you like (as well as in commands below)
+git push origin tag v2.4.4
+# create a release off the tag          # https://github.com/slideroom/v-calendar/releases
 
-### Theme Colors & Dark-Mode
+# USE LATEST IN THE CLIENT: ATS
+npm uninstall v-calendar
+npm i git+https://git@github.com/slideroom/v-calendar.git#v2.4.4
 
-| | |
-| :---: | :---: |
-| <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557327273/v-calendar/dark-blue.png"> | <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557327429/v-calendar/dark-red.png"> |
-| <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557327429/v-calendar/dark-teal.png"> | <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557327429/v-calendar/dark-purple.png"> |
-
-### Date Pickers
-
-| **Single Date** | **Multiple Date** | **Date Range** |
-| :---: | :---: | :---: |
-| <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557327864/v-calendar/single-picker.png"> | <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557327864/v-calendar/multi-picker.png"> | <img width="200" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557327864/v-calendar/range-picker.png"> |
-
-### Custom Calendars w/ Scoped Slots
-
-<img width="400" src="https://res.cloudinary.com/dqgcfqzpk/image/upload/v1557328504/v-calendar/custom-calendars.png">
+```
